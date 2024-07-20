@@ -66,6 +66,27 @@ public class CustomerController : ControllerBase
             return StatusCode(500, "Internal server error");
         }
     }
+
+    [HttpDelete("{id}")]
+    public ActionResult Delete(int id)
+    {
+        try
+        {
+            var isSuccessful = _customerService.Delete(id);
+            if (isSuccessful)
+            {
+                return Ok("Customer added successfully");
+            }
+            else
+            {
+                return BadRequest("Failed to add customer");
+            }
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, "Internal server error");
+        }
+    }
     
     
 }
