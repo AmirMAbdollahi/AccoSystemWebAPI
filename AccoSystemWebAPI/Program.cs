@@ -1,3 +1,4 @@
+using AccoSystem.Services;
 using AccoSystemWebAPI.DataLayer;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,6 +13,9 @@ builder.Services.AddDbContext<AccoSystemDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("MyConnectionString"));
 });
+
+builder.Services.AddScoped<ICustomerService, CustomerService>();
+builder.Services.AddScoped<ITransactionService, TransactionService>();
 
 var app = builder.Build();
 
