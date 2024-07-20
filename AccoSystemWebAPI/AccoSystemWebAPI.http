@@ -1,0 +1,6 @@
+@AccoSystemWebAPI_HostAddress = http://localhost:5279
+
+GET {{AccoSystemWebAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
