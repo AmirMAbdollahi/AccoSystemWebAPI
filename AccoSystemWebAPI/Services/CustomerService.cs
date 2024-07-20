@@ -1,21 +1,39 @@
 using AccoSystem.DataLayer;
 using AccoSystem.DataLayer.Context;
 using AccoSystemWebAPI.DataLayer;
+using AccoSystemWebAPI.DataLayer.Dto.Customer;
 using Microsoft.IdentityModel.Tokens;
 
 namespace AccoSystem.Services;
 
 public class CustomerService : ICustomerService
 {
-    public List<Customer> Get(string? query = null)
+    public List<CustomerDto> Get(string? query = null)
     {
         using var unit = new UnitOfWork(new AccoSystemDbContext());
+        List<CustomerDto>? customer;
         if (query.IsNullOrEmpty())
         {
-            return unit.CustomerRepository.Get().ToList();
-        }
+            customer = unit.CustomerRepository.Get().Select(customer => new CustomerDto()
+            {
+                CustomerId = customer.CustomerId,
+                FullName = customer.FullName,
+                Addrese = customer.Addrese,
+                Email = customer.Email,
+                Mobile = customer.Mobile
+            }).ToList();
 
-        return unit.CustomerRepository.Get(a => a.FullName == query).ToList();
+            return customer;
+        }
+        customer = unit.CustomerRepository.Get(a => a.FullName == query).Select(customer => new CustomerDto()
+        {
+            CustomerId = customer.CustomerId,
+            FullName = customer.FullName,
+            Addrese = customer.Addrese,
+            Email = customer.Email,
+            Mobile = customer.Mobile
+        }).ToList();
+        return customer;
     }
 
     public bool Add(string fullName, string mobile, string addrese, string email)

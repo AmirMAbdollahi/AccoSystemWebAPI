@@ -1,4 +1,6 @@
-﻿
+﻿using System;
+using System.Collections.Generic;
+
 namespace AccoSystemWebAPI.DataLayer;
 
 public partial class Customer
