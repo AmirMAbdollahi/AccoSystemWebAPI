@@ -9,7 +9,7 @@ public partial class Accounting
 
     public int CustomerId { get; set; }
 
-    public byte TransactionType { get; set; }
+    public TransactionType TransactionType { get; set; }
 
     public int Amount { get; set; }
 
