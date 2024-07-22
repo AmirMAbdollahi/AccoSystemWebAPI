@@ -1,5 +1,4 @@
 using AccoSystem.Services;
-using AccoSystemWebAPI.DataLayer;
 using AccoSystemWebAPI.DataLayer.Dto.Customer;
 using Microsoft.AspNetCore.Mvc;
 
@@ -87,6 +86,4 @@ public class CustomerController : ControllerBase
             return StatusCode(500, "Internal server error");
         }
     }
-    
-    
 }

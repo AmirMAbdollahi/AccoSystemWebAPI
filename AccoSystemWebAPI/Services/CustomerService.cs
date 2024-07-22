@@ -1,4 +1,3 @@
-using AccoSystem.DataLayer;
 using AccoSystem.DataLayer.Context;
 using AccoSystemWebAPI.DataLayer;
 using AccoSystemWebAPI.DataLayer.Dto.Customer;
@@ -8,13 +7,19 @@ namespace AccoSystem.Services;
 
 public class CustomerService : ICustomerService
 {
+    private readonly AccoSystemDbContext _dbContext;
+
+    public CustomerService(AccoSystemDbContext dbContext)
+    {
+        _dbContext = dbContext;
+    }
+
     public List<CustomerDto> Get(string? query = null)
     {
-        using var unit = new UnitOfWork(new AccoSystemDbContext());
         List<CustomerDto>? customer;
         if (query.IsNullOrEmpty())
         {
-            customer = unit.CustomerRepository.Get().Select(customer => new CustomerDto()
+            customer = _dbContext.Customers.Select(customer => new CustomerDto()
             {
                 CustomerId = customer.CustomerId,
                 FullName = customer.FullName,
@@ -25,7 +30,8 @@ public class CustomerService : ICustomerService
 
             return customer;
         }
-        customer = unit.CustomerRepository.Get(a => a.FullName == query).Select(customer => new CustomerDto()
+
+        customer = _dbContext.Customers.Where(a => a.FullName == query).Select(customer => new CustomerDto()
         {
             CustomerId = customer.CustomerId,
             FullName = customer.FullName,
@@ -38,23 +44,21 @@ public class CustomerService : ICustomerService
 
     public bool Add(string fullName, string mobile, string addrese, string email)
     {
-        using var unit = new UnitOfWork(new AccoSystemDbContext());
-        var isSuccessful = unit.CustomerRepository.Insert(new Customer()
+        _dbContext.Customers.Add(new Customer()
         {
             FullName = fullName,
             Mobile = mobile,
             Addrese = addrese,
             Email = email
         });
-        unit.Save();
+        var isSuccessful = _dbContext.SaveChanges();
 
-        return isSuccessful;
+        return isSuccessful > 0;
     }
 
     public bool Edit(int id, string fullName, string mobile, string addrese, string email)
     {
-        using var unit = new UnitOfWork(new AccoSystemDbContext());
-        var isSuccessful = unit.CustomerRepository.Update(new Customer()
+        _dbContext.Customers.Update(new Customer()
         {
             CustomerId = id,
             FullName = fullName,
@@ -62,18 +66,21 @@ public class CustomerService : ICustomerService
             Addrese = addrese,
             Email = email
         });
-        unit.Save();
+        var isSuccessful = _dbContext.SaveChanges();
 
-        return isSuccessful;
+        return isSuccessful > 0;
     }
 
     public bool Delete(int id)
     {
-        using var unit = new UnitOfWork(new AccoSystemDbContext());
-        var isSuccessful = unit.CustomerRepository.Delete(id);
-        unit.Save();
+        var customer = _dbContext.Customers.FirstOrDefault(c => c.CustomerId == id);
+        _dbContext.Customers.Remove(customer);
+        var isSuccessful = _dbContext.SaveChanges();
+        //using var unit = new UnitOfWork(new AccoSystemDbContext());
+        //var isSuccessful = unit.CustomerRepository.Delete(id);
+        //unit.Save();
 
-        return isSuccessful;
+        return isSuccessful > 0;
     }
 
     // public List<Customer> Search(string query)

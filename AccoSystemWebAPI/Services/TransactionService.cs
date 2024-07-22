@@ -12,10 +12,7 @@ public class TransactionService : ITransactionService
         using var unit = new UnitOfWork(new AccoSystemDbContext());
         return type is TransactionType.Cost or TransactionType.Income
             ? unit.AccountingRepository.Get(a => a.TransactionType == type).ToList()
-            : unit.AccountingRepository.Get(null, new List<Expression<Func<Accounting, object>>>()
-            {
-                x => x.Customer
-            }).ToList();
+            : unit.AccountingRepository.Get().ToList();
     }
 
     public bool Add(int customerId, int amount, TransactionType type, string description)

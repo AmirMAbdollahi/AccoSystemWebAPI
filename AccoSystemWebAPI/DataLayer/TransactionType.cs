@@ -1,7 +1,11 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace AccoSystemWebAPI.DataLayer;
 
-public enum TransactionType
+public enum TransactionType : byte
 {
+    //[Display(Name = "دریافت")]
     Income = 1,
-    Cost 
+    //[Display(Name = "پرداخت")]
+    Cost
 }
