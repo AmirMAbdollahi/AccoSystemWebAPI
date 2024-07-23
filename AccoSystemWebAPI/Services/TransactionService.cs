@@ -7,18 +7,22 @@ namespace AccoSystemWebAPI.Services;
 
 public class TransactionService : ITransactionService
 {
+    private AccoSystemDbContext _dbContext;
+    public TransactionService(AccoSystemDbContext dbContext)
+    {
+        _dbContext = dbContext;
+    }
+
     public List<Accounting> Get(TransactionType type = default)
     {
-        using var unit = new UnitOfWork(new AccoSystemDbContext());
         return type is TransactionType.Cost or TransactionType.Income
-            ? unit.AccountingRepository.Get(a => a.TransactionType == type).ToList()
-            : unit.AccountingRepository.Get().ToList();
+            ? _dbContext.Accountings.Where(a => a.TransactionType == type).ToList()
+            : _dbContext.Accountings.ToList();
     }
 
     public bool Add(int customerId, int amount, TransactionType type, string description)
     {
-        using var unit = new UnitOfWork(new AccoSystemDbContext());
-        var isSuccessful = unit.AccountingRepository.Insert(new Accounting()
+        _dbContext.Accountings.Add(new Accounting()
         {
             CustomerId = customerId,
             Amount = amount,
@@ -26,15 +30,14 @@ public class TransactionService : ITransactionService
             DateTime = DateTime.Now,
             Description = description,
         });
-        unit.Save();
+        var isSuccessful =_dbContext.SaveChanges();
 
-        return isSuccessful;
+        return isSuccessful>0;
     }
 
     public bool Edit(int id, int customerId, int amount, TransactionType type, string description)
     {
-        using var unit = new UnitOfWork(new AccoSystemDbContext());
-        var isSuccessful = unit.AccountingRepository.Update(new Accounting()
+        _dbContext.Accountings.Update(new Accounting()
         {
             Id = id,
             DateTime = DateTime.Now,
@@ -43,18 +46,18 @@ public class TransactionService : ITransactionService
             CustomerId = customerId,
             TransactionType = type
         });
-        unit.Save();
+        var isSuccessful =_dbContext.SaveChanges();
 
-        return isSuccessful;
+        return isSuccessful>0;
     }
 
     public bool Delete(int id)
     {
-        using var unit = new UnitOfWork(new AccoSystemDbContext());
-        var isSuccessful = unit.AccountingRepository.Delete(id);
-        unit.Save();
+        var accounting = _dbContext.Accountings.FirstOrDefault(a => a.Id == id);
+        _dbContext.Accountings.Remove(accounting);
+        var isSuccessful =_dbContext.SaveChanges();
 
-        return isSuccessful;
+        return isSuccessful>0;
     }
 
     public List<Accounting> Search(DateTime fromDate, DateTime toDate)

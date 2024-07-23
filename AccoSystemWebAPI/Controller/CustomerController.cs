@@ -53,7 +53,7 @@ public class CustomerController : ControllerBase
                 createCustomerDto.Addrese, createCustomerDto.Email);
             if (isSuccessful)
             {
-                return Ok("Customer added successfully");
+                return Ok("Customer edited successfully");
             }
             else
             {
@@ -74,7 +74,7 @@ public class CustomerController : ControllerBase
             var isSuccessful = _customerService.Delete(id);
             if (isSuccessful)
             {
-                return Ok("Customer added successfully");
+                return Ok("Customer deleted successfully");
             }
             else
             {
