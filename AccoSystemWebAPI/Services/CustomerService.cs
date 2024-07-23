@@ -41,7 +41,7 @@ public class CustomerService : ICustomerService
         return customer;
     }
 
-    public bool Add(string fullName, string mobile, string addrese, string email)
+    public async Task<bool> AddAsync(string fullName, string mobile, string addrese, string email)
     {
         _dbContext.Customers.Add(new Customer()
         {
@@ -50,7 +50,7 @@ public class CustomerService : ICustomerService
             Addrese = addrese,
             Email = email
         });
-        var isSuccessful = _dbContext.SaveChanges();
+        var isSuccessful = await _dbContext.SaveChangesAsync();
 
         return isSuccessful > 0;
     }

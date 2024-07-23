@@ -23,11 +23,11 @@ public class CustomerController : ControllerBase
     }
 
     [HttpPost]
-    public ActionResult PostCustomer([FromBody] CreateCustomerDto createCustomerDto)
+    public async Task<ActionResult> PostCustomer([FromBody] CreateCustomerDto createCustomerDto)
     {
         try
         {
-            var isSuccessful = _customerService.Add(createCustomerDto.FullName, createCustomerDto.Mobile,
+            var isSuccessful = await _customerService.AddAsync(createCustomerDto.FullName, createCustomerDto.Mobile,
                 createCustomerDto.Addrese, createCustomerDto.Email);
             if (isSuccessful)
             {
@@ -49,7 +49,7 @@ public class CustomerController : ControllerBase
     {
         try
         {
-            var isSuccessful = _customerService.Edit(id,createCustomerDto.FullName, createCustomerDto.Mobile,
+            var isSuccessful = _customerService.Edit(id, createCustomerDto.FullName, createCustomerDto.Mobile,
                 createCustomerDto.Addrese, createCustomerDto.Email);
             if (isSuccessful)
             {
