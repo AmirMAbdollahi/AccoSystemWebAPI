@@ -1,7 +1,7 @@
 using AccoSystem.DataLayer;
 using AccoSystemWebAPI.DataLayer;
 
-namespace AccoSystem.Services;
+namespace AccoSystemWebAPI.Services;
 
 public interface ITransactionService
 {

@@ -1,9 +1,8 @@
-using AccoSystem.DataLayer.Context;
 using AccoSystemWebAPI.DataLayer;
 using AccoSystemWebAPI.DataLayer.Dto.Customer;
 using Microsoft.IdentityModel.Tokens;
 
-namespace AccoSystem.Services;
+namespace AccoSystemWebAPI.Services;
 
 public class CustomerService : ICustomerService
 {

@@ -1,8 +1,6 @@
-using AccoSystem.DataLayer;
-using AccoSystemWebAPI.DataLayer;
 using AccoSystemWebAPI.DataLayer.Dto.Customer;
 
-namespace AccoSystem.Services;
+namespace AccoSystemWebAPI.Services;
 
 public interface ICustomerService
 {

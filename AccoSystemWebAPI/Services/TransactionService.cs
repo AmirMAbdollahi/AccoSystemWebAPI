@@ -3,7 +3,7 @@ using AccoSystem.DataLayer;
 using AccoSystem.DataLayer.Context;
 using AccoSystemWebAPI.DataLayer;
 
-namespace AccoSystem.Services;
+namespace AccoSystemWebAPI.Services;
 
 public class TransactionService : ITransactionService
 {
